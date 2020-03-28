@@ -4,6 +4,12 @@ import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import FlatButton from '../../shared/button.js';
+import { StackActions, NavigationActions } from 'react-navigation';
+
+const resetAction = StackActions.reset({
+  index: 0,
+  actions: [NavigationActions.navigate({ routeName: 'Home' })],
+});
 
 const requestSchema = yup.object({
   name: yup.string()
@@ -27,7 +33,7 @@ export default function SignUp({ navigation }) {
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           actions.resetForm(); 
-          navigation.navigate('Home')
+          navigation.dispatch(resetAction);
         }}
       >
         {props => (

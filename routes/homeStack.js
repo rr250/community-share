@@ -2,7 +2,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../shared/header';
 import Home from '../screens/home';
-import RequestDetails from '../screens/requestDetails';
 import Login from '../screens/auth/login';
 import VerifyOtp from '../screens/auth/verifyOtp';
 import SignUp from '../screens/auth/signup';
@@ -31,15 +30,9 @@ const screens = {
     headerLeft: null,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='GameZone' navigation={navigation} />
+        headerTitle: () => <Header title='Community Share' navigation={navigation} />
       }
     },
-  },
-  RequestDetails: {
-    screen: RequestDetails,
-    navigationOptions: {
-      title: 'Request Details',
-    }
   },
 };
 
