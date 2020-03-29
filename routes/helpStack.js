@@ -2,9 +2,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../shared/header';
 import Helps from '../screens/help/helps.js';
+import HelpDetails from '../screens/help/helpDetails'
 
 const screens = {
-  About: {
+  Helps: {
     screen: Helps,
     navigationOptions: ({ navigation }) => {
       return {
@@ -12,6 +13,12 @@ const screens = {
       }
     },
   },
+  HelpDetails: {
+    screen: HelpDetails,
+    navigationOptions: {
+      title: 'HelpDetails',
+    }
+  }
 }
 
 const HelpStack = createStackNavigator(screens, {

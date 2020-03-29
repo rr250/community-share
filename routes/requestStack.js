@@ -2,9 +2,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../shared/header';
 import Requests from '../screens/request/requests';
+import RequestDetails from '../screens/request/requestDetails';
 
 const screens = {
-  About: {
+  Requests: {
     screen: Requests,
     navigationOptions: ({ navigation }) => {
       return {
@@ -12,6 +13,12 @@ const screens = {
       }
     },
   },
+  RequestDetails: {
+    screen: RequestDetails,
+    navigationOptions: {
+      title: 'RequestDetails',
+    }
+  }
 }
 
 const RequestStack = createStackNavigator(screens, {

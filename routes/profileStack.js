@@ -1,10 +1,10 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../shared/header';
-import Profile from '../screens/profile';
+import Profile from '../screens/profile/profile';
 
 const screens = {
-  About: {
+  Profile: {
     screen: Profile,
     navigationOptions: ({ navigation }) => {
       return {
