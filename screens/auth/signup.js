@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, Button, TextInput, View, Text } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, Button, TextInput, View, Text, AsyncStorage } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import FlatButton from '../../shared/button.js';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { AuthContext } from '../../contexts/AuthContext.js';
 
 const resetAction = StackActions.reset({
   index: 0,
@@ -25,6 +26,8 @@ const requestSchema = yup.object({
 
 export default function SignUp({ navigation }) {
 
+  const { dispatch } = useContext(AuthContext);
+
   return (
     
     <View style={globalStyles.container}>
@@ -33,6 +36,7 @@ export default function SignUp({ navigation }) {
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           actions.resetForm(); 
+          dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:'loggedIn'});
           navigation.dispatch(resetAction);
         }}
       >

@@ -7,24 +7,6 @@ import VerifyOtp from '../screens/auth/verifyOtp';
 import SignUp from '../screens/auth/signup';
 
 const screens = {
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      title: 'Login',
-    }
-  },
-  VerifyOtp: {
-    screen: VerifyOtp,
-    navigationOptions: {
-      title: 'VerifyOtp',
-    }
-  },
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: 'SignUp',
-    }
-  },
   Home: {
     screen: Home,
     headerLeft: null,
