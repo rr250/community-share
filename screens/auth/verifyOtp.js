@@ -22,7 +22,20 @@ export default function VerifyOtp({ navigation }) {
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           actions.resetForm(); 
-          navigation.navigate('SignUp')
+          API.post('users/login/verify',{
+            requestId:navigation.getParam('requestId'),
+            otpCode:values.otp
+          })
+          .then(async res=>{
+            if(res.newUser===true){
+              const token=res.token;
+              navigation.navigate('SignUp',token)
+            }
+            else{
+              dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:res.token});
+            }
+          })
+          actions.resetForm();    
         }}
       >
         {props => (

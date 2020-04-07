@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
   const [loggedInToken, dispatch] = useReducer(authReducer, null, () => {
-    const storageLoggedInToken =AsyncStorage.getItem('loggedInToken')
+    const storageLoggedInToken =AsyncStorage.getItem('LoggedInToken')
     return loggedInToken ? storageLoggedInToken : null;
   });
   async function saveToken(token){

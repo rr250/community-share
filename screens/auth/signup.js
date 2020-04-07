@@ -36,8 +36,8 @@ export default function SignUp({ navigation }) {
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           actions.resetForm(); 
-          dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:'loggedIn'});
-          navigation.dispatch(resetAction);
+          dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:navigation.getparam('token')});
+          // navigation.dispatch(resetAction);
         }}
       >
         {props => (

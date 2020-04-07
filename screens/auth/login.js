@@ -4,6 +4,7 @@ import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import FlatButton from '../../shared/button.js';
+import API from '../../utils/api.js';
 
 const requestSchema = yup.object({
   phoneNumber: yup.string()
@@ -21,8 +22,19 @@ export default function Login({ navigation }) {
         initialValues={{ phoneNumber: '',}}
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
-          actions.resetForm(); 
-          navigation.navigate('VerifyOtp')
+          API.post('users/login',{
+            otpLength:6,
+            phoneNumber:values.phoneNumber
+          })
+          .then(async res=>{
+            console.log(res)
+            const requestId = res.requestId;
+            navigation.navigate('VerifyOtp', requestId)
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+          actions.resetForm();           
         }}
       >
         {props => (
