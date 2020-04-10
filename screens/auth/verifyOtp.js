@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Button, TextInput, View, Text } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import FlatButton from '../../shared/button.js';
+import API from '../../utils/api.js';
+import { AuthContext } from '../../contexts/AuthContext.js';
 
 const requestSchema = yup.object({
   otp: yup.string()
@@ -14,6 +16,8 @@ const requestSchema = yup.object({
 
 export default function VerifyOtp({ navigation }) {
 
+  const { dispatch } = useContext(AuthContext);
+
   return (
     
     <View style={globalStyles.container}>
@@ -22,14 +26,14 @@ export default function VerifyOtp({ navigation }) {
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           actions.resetForm(); 
-          API.post('users/login/verify',{
+          API.post('auth/login/verify',{
             requestId:navigation.getParam('requestId'),
             otpCode:values.otp
           })
-          .then(async res=>{
-            if(res.newUser===true){
-              const token=res.token;
-              navigation.navigate('SignUp',token)
+          .then(res=>{
+            console.log(res);
+            if(res.data.detailsUpdated===false){
+              navigation.navigate('SignUp',{token:res.data.token})
             }
             else{
               dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:res.token});

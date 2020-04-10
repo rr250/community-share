@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Button, TextInput, View, Text, AsyncStorage } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
@@ -6,38 +6,66 @@ import * as yup from 'yup';
 import FlatButton from '../../shared/button.js';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { AuthContext } from '../../contexts/AuthContext.js';
-
-const resetAction = StackActions.reset({
-  index: 0,
-  actions: [NavigationActions.navigate({ routeName: 'Home' })],
-});
+import API, { baseURL } from '../../utils/api.js';
+import Axios from "axios";
 
 const requestSchema = yup.object({
   name: yup.string()
     .required()
-    .min(3),
-  email: yup.string()
-    .required()
-    .email(),
-  address: yup.string()
-    .required()
-    .min(8)
+    .min(3)
 });
 
 export default function SignUp({ navigation }) {
 
+  const [x, setX] = useState('12.9716');
+
+  const [y, setY] = useState('77.5946');
+
   const { dispatch } = useContext(AuthContext);
+
+  const findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = JSON.stringify(position);
+        console.log(position);
+        setX(position.coords.latitude);
+        setY(position.coords.longitude);
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
+
+  findCoordinates();
 
   return (
     
     <View style={globalStyles.container}>
       <Formik
-        initialValues={{ name: '', email: '', address:'',}}
+        initialValues={{ name: ''}}
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
+          console.log("Bearer "+navigation.getParam('token'));
+          const authToken = "Bearer "+navigation.getParam('token');
+          console.log('Bearer ${authToken}');
+          Axios.put(baseURL+'users',{
+            homeLocation:{
+              x:x,
+              y:y
+            },
+            name:values.name
+          },
+          {
+            headers: { Authorization: authToken }
+          })
+          .then(res=>{
+            console.log(res);
+            dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
           actions.resetForm(); 
-          dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:navigation.getparam('token')});
-          // navigation.dispatch(resetAction);
         }}
       >
         {props => (
@@ -51,26 +79,6 @@ export default function SignUp({ navigation }) {
             />
             {/* only if the left value is a valid string, will the right value be displayed */}
             <Text style={globalStyles.errorText}>{props.touched.name && props.errors.name}</Text>
-
-            <TextInput
-              style={globalStyles.input}
-              multiline minHeight={60}
-              placeholder='Enter your Address'
-              onChangeText={props.handleChange('address')}
-              onBlur={props.handleBlur('address')}
-              value={props.values.address}
-            />
-            <Text style={globalStyles.errorText}>{props.touched.address && props.errors.address}</Text>
-
-            <TextInput 
-              style={globalStyles.input}
-              placeholder='Enter your Email'
-              onChangeText={props.handleChange('email')}
-              onBlur={props.handleBlur('email')} 
-              value={props.values.email}
-              keyboardType='email-address'
-            />
-            <Text style={globalStyles.errorText}>{props.touched.email && props.errors.email}</Text>
 
             <FlatButton onPress={props.handleSubmit} text='submit' />
           </View>

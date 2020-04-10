@@ -8,7 +8,7 @@ export default function Profile() {
   const { dispatch } = useContext(AuthContext);
 
   const signout = () => {
-    dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+    dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:null});
   }
   return (
     <View style={globalStyles.container}>

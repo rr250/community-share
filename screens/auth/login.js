@@ -22,14 +22,13 @@ export default function Login({ navigation }) {
         initialValues={{ phoneNumber: '',}}
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
-          API.post('users/login',{
+          API.post('auth/login',{
             otpLength:6,
             phoneNumber:values.phoneNumber
           })
-          .then(async res=>{
+          .then(res=>{
             console.log(res)
-            const requestId = res.requestId;
-            navigation.navigate('VerifyOtp', requestId)
+            navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
           })
           .catch((err)=>{
             console.log(err);

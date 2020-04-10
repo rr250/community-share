@@ -22,7 +22,7 @@ export function App() {
 
   const { loggedInToken } = useContext(AuthContext)
 
-  const isLoggedIn = loggedInToken==='loggedIn'?true:false;
+  const isLoggedIn = loggedInToken!==null?true:false;
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 

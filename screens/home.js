@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal,
   TouchableWithoutFeedback, Keyboard, AsyncStorage } from 'react-native';
 import { globalStyles } from '../styles/global';
 import Card from '../shared/card';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home({ navigation }) {
-  const getToken = async () => {
-    console.log(await AsyncStorage.getItem('LoggedInToken'));
-  };
 
-  getToken();
+  const { loggedInToken } = useContext(AuthContext)
+
+  console.log(loggedInToken)
 
   findCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
