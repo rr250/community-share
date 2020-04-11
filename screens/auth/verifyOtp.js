@@ -36,7 +36,8 @@ export default function VerifyOtp({ navigation }) {
               navigation.navigate('SignUp',{token:res.data.token})
             }
             else{
-              dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:res.token});
+              const authToken = "Bearer "+res.data.token;
+              dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
             }
           })
           actions.resetForm();    

@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import Navigator from './routes/drawer';
 import AuthNavigator from './routes/authStack'
 import AuthContextProvider, { AuthContext } from './contexts/AuthContext';
+import { AsyncStorage } from 'react-native';
 
 const getFonts = () => Font.loadAsync({
   'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
@@ -20,9 +21,18 @@ export default function AppWrapper() {
 
 export function App() {
 
-  const { loggedInToken } = useContext(AuthContext)
+  const { dispatch } = useContext(AuthContext)
+  const [logInToken, setLogInToken] = useState('');
+  useEffect(() => {
+    dispatch({ type: 'GET_LOGIN_TOKEN' });
+    AsyncStorage.getItem('LoggedInToken').then((token)=>{
+      setLogInToken(token);
+    })
+  }, []);
 
-  const isLoggedIn = loggedInToken!==null?true:false;
+  console.log(logInToken);
+
+  const isLoggedIn = logInToken===null || logInToken===''?false:true;
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 

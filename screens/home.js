@@ -11,20 +11,6 @@ export default function Home({ navigation }) {
 
   console.log(loggedInToken)
 
-  findCoordinates = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const location = JSON.stringify(position);
-
-        console.log(position);
-      },
-      error => Alert.alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
-
-  findCoordinates();
-
   return (
     <View style={globalStyles.container}>
       <TouchableOpacity>
