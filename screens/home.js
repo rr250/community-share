@@ -10,21 +10,40 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Home({ navigation }) {
 
-  const { loggedInToken } = useContext(AuthContext);
-  console.log(loggedInToken);
+  const { loggedInToken, dispatch } = useContext(AuthContext);
+  const [logInToken, setLogInToken] = useState('');
+  console.log('use'+loggedInToken+'token');
   const [modalOpen, setModalOpen] = useState(false);
-  const [pageNo, setPageNo] = useState(1);
+  const [pageNo, setPageNo] = useState(0);
   const [posts, setPosts] = useState([]);
   
   useEffect(()=>{
-    API.get('posts?pageNo='+pageNo+'&pageSize=10&radius=100')
-    .then(res=>{
-      console.log(res)
-    })
-    .catch((err)=>{
-      console.log(err);
+    AsyncStorage.getItem('LoggedInToken').then((token)=>{
+      setLogInToken(token);
     })
   },[])
+
+  useEffect(() => {
+    if(logInToken!==null && logInToken!==''){
+      console.log(logInToken)
+      API.get('posts',{
+        params:{
+          pageNo:pageNo,
+          pageSize:10,
+          radius:10
+        },
+        headers:{
+          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs'
+        }
+      })
+      .then(res=>{
+        console.log('res')
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    }    
+  }, [logInToken])
 
   return (
     <View style={globalStyles.container}>
@@ -38,7 +57,7 @@ export default function Home({ navigation }) {
               style={{...styles.modalToggle, ...styles.modalClose}} 
               onPress={() => setModalOpen(false)} 
             />
-            <PostForm />
+            <PostForm setModalOpen={setModalOpen}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
