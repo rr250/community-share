@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { globalStyles, images } from '../../styles/global';
 import Card from '../../shared/card';
 
-export default function HelpDetails({ navigation }) {
+export default function PostDetails({ navigation }) {
   const rating = navigation.getParam('rating');
   
   return (

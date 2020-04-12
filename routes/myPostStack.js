@@ -1,31 +1,31 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
 import Header from '../shared/header';
-import Requests from '../screens/request/requests';
-import RequestDetails from '../screens/request/requestDetails';
+import MyPosts from '../screens/myPost/myPosts.js';
+import MyPostDetails from '../screens/myPost/myPostDetails'
 
 const screens = {
-  Requests: {
-    screen: Requests,
+  MyPosts: {
+    screen: MyPosts,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Requests' navigation={navigation} />
+        headerTitle: () => <Header title='MyPosts' navigation={navigation} />
       }
     },
   },
-  RequestDetails: {
-    screen: RequestDetails,
+  MyPostDetails: {
+    screen: MyPostDetails,
     navigationOptions: {
-      title: 'RequestDetails',
+      title: 'MyPostDetails',
     }
   }
 }
 
-const RequestStack = createStackNavigator(screens, {
+const MyPostStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: '#444',
     headerStyle: { backgroundColor: '#eee', height: 60 },
   }
 });
 
-export default RequestStack;
+export default MyPostStack;

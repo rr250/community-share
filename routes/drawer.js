@@ -4,8 +4,7 @@ import { createAppContainer } from 'react-navigation';
 // stacks
 import HomeStack from './homeStack';
 import AboutStack from './aboutStack';
-import RequestStack from './requestStack';
-import HelpStack from './helpStack';
+import MyPostStack from './myPostStack';
 import ProfileStack from './profileStack';
 
 // drawer navigation options
@@ -13,11 +12,8 @@ const RootDrawerNavigator = createDrawerNavigator({
   Home: {
     screen: HomeStack,
   },
-  Request: {
-    screen: RequestStack,
-  },
-  Help: {
-    screen: HelpStack,
+  MyPost: {
+    screen: MyPostStack,
   },
   Profile: {
     screen: ProfileStack,

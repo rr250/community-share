@@ -10,18 +10,19 @@ const API = axios.create({
 
 async function getToken(token){
   const loggedInToken = await AsyncStorage.getItem('LoggedInToken');
-  return loggedInToken===null?null:loggedInToken;
+  return loggedInToken===null||loggedInToken===''?null:loggedInToken;
 }
 
-API.interceptors.request.use(async config => {
+API.interceptors.request.use( config => {
   console.log('intercepted');
-  const loggedInToken = await getToken();
-  console.log(loggedInToken)
-  if(loggedInToken!==null){
-    config.headers.Authorization= loggedInToken;
-  }
-  console.log(config.headers.Authorization);
-  return config
+  var loggedInToken='';
+  getToken().then((token)=>{
+    loggedInToken=token;  
+    if(loggedInToken!==null||loggedInToken!==''){
+      config.headers.Authorization= loggedInToken;
+    }
+    return config
+  });
 })
 
 export default API
