@@ -50,8 +50,8 @@ export default function SignUp({ navigation }) {
           console.log('Bearer ${authToken}');
           Axios.put(baseURL+'users',{
             homeLocation:{
-              x:x,
-              y:y
+              x:12.9716,
+              y:77.5946
             },
             name:values.name
           },

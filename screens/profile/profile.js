@@ -31,7 +31,7 @@ export default function Profile() {
   
   useEffect(()=>{
     AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token);
+      setLogInToken(token.slice(1,logInToken.length-1));
     })
   },[])
 
@@ -40,7 +40,7 @@ export default function Profile() {
       console.log(logInToken)
       API.get('users/me',{
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs'
+          Authorization:logInToken
         }
       })
       .then(res=>{

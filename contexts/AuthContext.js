@@ -8,6 +8,13 @@ const AuthContextProvider = (props) => {
 
   const [loggedInToken, dispatch] = useReducer(authReducer,'');
 
+  useEffect(() => {
+    AsyncStorage.getItem('LoggedInToken').then((loggedInToken)=>{
+      console.log('tok'+loggedInToken)
+      dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken: JSON.parse(loggedInToken) })
+    });
+  }, [])
+
   return (
     <AuthContext.Provider value={{ loggedInToken, dispatch }}>
       {props.children}

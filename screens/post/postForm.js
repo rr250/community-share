@@ -17,7 +17,7 @@ const requestSchema = yup.object({
     .required()
 });
 
-export default function PostForm({ setModalOpen}) {
+export default function PostForm({ setModalOpen, logInToken}) {
 
   return (
     
@@ -38,7 +38,7 @@ export default function PostForm({ setModalOpen}) {
           },
           {
           headers: { 
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs' 
+            Authorization: logInToken
           }
           })
           .then(res=>{

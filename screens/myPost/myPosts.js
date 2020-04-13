@@ -19,7 +19,7 @@ export default function MyPosts({ navigation }) {
   
   useEffect(()=>{
     AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token);
+      setLogInToken(token.slice(1,logInToken.length-1));
     })
   },[])
 
@@ -32,7 +32,7 @@ export default function MyPosts({ navigation }) {
           pageSize:10,
         },
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs'
+          Authorization:logInToken
         }
       })
       .then(res=>{
@@ -70,7 +70,7 @@ export default function MyPosts({ navigation }) {
       />
 
       <FlatList data={posts} keyExtractor={(item, index) => item.postId} renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', item)}>
+        <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', { item: item, logInToken: logInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
           </Card>

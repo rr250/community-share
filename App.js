@@ -21,18 +21,20 @@ export default function AppWrapper() {
 
 export function App() {
 
-  const { dispatch } = useContext(AuthContext)
+  const { loggedInToken, dispatch } = useContext(AuthContext)
   const [logInToken, setLogInToken] = useState('');
-  useEffect(() => {
-    dispatch({ type: 'GET_LOGIN_TOKEN' });
-    AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token);
-    })
-  }, []);
+  // useEffect(() => {
+  //   //dispatch({ type: 'GET_LOGIN_TOKEN' });
+  //   AsyncStorage.getItem('LoggedInToken').then((token)=>{
+  //     setLogInToken(token);
+  //   })
+  // }, []);
 
-  console.log(logInToken);
+  //console.log(logInToken);
 
-  const isLoggedIn = logInToken===null || logInToken===''?false:true;
+  console.log('App'+loggedInToken);
+
+  const isLoggedIn = loggedInToken===null || loggedInToken==='' || loggedInToken === undefined?false:true;
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 

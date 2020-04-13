@@ -11,11 +11,15 @@ export default function MyPostDetails({ navigation }) {
   const [pageNo, setPageNo] = useState(0);
   const [helps, setHelps] = useState([]);
 
-  useEffect(()=>{
-    AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token);
-    })
-  },[])
+  // useEffect(()=>{
+  //   AsyncStorage.getItem('LoggedInToken').then((token)=>{
+  //     setLogInToken(token.slice(1,logInToken.length-1));
+  //   })
+  // },[])
+
+  const item = navigation.getParam('item');
+
+  setLogInToken(navigation.getParam('logInToken'))
 
   useEffect(() => {
     if(logInToken!==null && logInToken!==''){
@@ -26,7 +30,7 @@ export default function MyPostDetails({ navigation }) {
           postId:postId
         },
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs'
+          Authorization:logInToken
         }
       })
       .then(res=>{
@@ -44,9 +48,9 @@ export default function MyPostDetails({ navigation }) {
     <View style={globalStyles.container}>
       <Card>
         <Text style={globalStyles.titleText}>
-          { navigation.getParam('title') }
+          { item.title }
         </Text>
-        <Text>{ navigation.getParam('description') }</Text>
+        <Text>{ item.description }</Text>
       </Card>
 
       <FlatList data={helps} keyExtractor={(item, index) => item.helpId} renderItem={({ item }) => (

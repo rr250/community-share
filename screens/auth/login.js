@@ -30,8 +30,8 @@ export default function Login({ navigation }) {
             console.log(res)
             navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
           })
-          .catch((err)=>{
-            console.log(err);
+          .catch((error)=>{
+            console.log(error.request);
           })
           actions.resetForm();           
         }}

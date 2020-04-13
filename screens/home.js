@@ -19,7 +19,7 @@ export default function Home({ navigation }) {
   
   useEffect(()=>{
     AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token);
+      setLogInToken(token.slice(1,logInToken.length-1));
     })
   },[])
 
@@ -33,14 +33,14 @@ export default function Home({ navigation }) {
           radius:10
         },
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYjAwNzU0OS1jMDk1LTQ1M2UtOGQ1ZC04YjQ5YzBlNzE2NjYiLCJpYXQiOjE1ODY2MzgyNDUsInN1YiI6Ijk4MjA5NjAxNDIiLCJpc3MiOiJTY2FsZXIiLCJleHAiOjE1ODkyMzAyNDV9.mqtDxKS89k_6yFNJ9Y9ZbIHiYPeHAyEJtN9RT7oT3bs'
+          Authorization:loggedInToken
         }
       })
       .then(res=>{
-        console.log('res')
+        console.log(res)
       })
-      .catch((err)=>{
-        console.log(err);
+      .catch((error)=>{
+        console.log(error.response);
       })
     }    
   }, [logInToken])
@@ -57,7 +57,7 @@ export default function Home({ navigation }) {
               style={{...styles.modalToggle, ...styles.modalClose}} 
               onPress={() => setModalOpen(false)} 
             />
-            <PostForm setModalOpen={setModalOpen}/>
+            <PostForm setModalOpen={setModalOpen} logInToken={logInToken}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -70,7 +70,7 @@ export default function Home({ navigation }) {
       />
 
       <FlatList data={posts} renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('PostDetails', item)}>
+        <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { item: item, logInToken: logInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
           </Card>

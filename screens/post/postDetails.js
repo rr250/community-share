@@ -14,15 +14,18 @@ const requestSchema = yup.object({
 });
 
 export default function PostDetails({ navigation }) {
+
+  const item = navigation.getParam('item');
+  const logInToken = navigation.getParam('logInToken')
  
   return (
     <View style={globalStyles.container}>
       <Card>
         <Text style={globalStyles.titleText}>
-          { navigation.getParam('title') }
+          { item.title }
         </Text>
-        <Text>{ navigation.getParam('description') }</Text>
-        <Text>{ navigation.getParam('locationDisplayName') }</Text>
+        <Text>{ item.description }</Text>
+        <Text>{ item.locationDisplayName }</Text>
       </Card>
       <Formik
         initialValues={{ phoneNumber: '',}}
@@ -31,7 +34,13 @@ export default function PostDetails({ navigation }) {
           API.post('help-offers',{
             postId: navigation.getParam('postId'),
             message:values.message
-          })
+          },
+          {
+            headers: { 
+              Authorization: logInToken
+            }
+          }
+          )
           .then(res=>{
             console.log(res)
             navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
