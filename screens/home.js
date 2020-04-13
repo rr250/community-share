@@ -11,40 +11,31 @@ import { MaterialIcons } from '@expo/vector-icons';
 export default function Home({ navigation }) {
 
   const { loggedInToken, dispatch } = useContext(AuthContext);
-  const [logInToken, setLogInToken] = useState('');
-  console.log('use'+loggedInToken+'token');
+  console.log(loggedInToken);
   const [modalOpen, setModalOpen] = useState(false);
   const [pageNo, setPageNo] = useState(0);
   const [posts, setPosts] = useState([]);
-  
-  useEffect(()=>{
-    AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token.slice(1,logInToken.length-1));
-    })
-  },[])
 
   useEffect(() => {
-    if(logInToken!==null && logInToken!==''){
-      console.log(logInToken)
-      API.get('posts',{
-        params:{
-          pageNo:pageNo,
-          pageSize:10,
-          radius:10,
-          includeOwn:true
-        },
-        headers:{
-          Authorization:loggedInToken
-        }
-      })
-      .then(res=>{
-        console.log(res)
-      })
-      .catch((error)=>{
-        console.log(error.response);
-      })
-    }    
-  }, [logInToken])
+    console.log(navigation)
+    API.get('posts',{
+      params:{
+        pageNo:pageNo,
+        pageSize:10,
+        radius:10,
+        includeOwn:true
+      },
+      headers:{
+        Authorization:loggedInToken
+      }
+    })
+    .then(res=>{
+      console.log(res)
+    })
+    .catch((error)=>{
+      console.log(error.response);
+    })
+  }, [modalOpen, navigation])
 
   return (
     <View style={globalStyles.container}>
@@ -58,7 +49,7 @@ export default function Home({ navigation }) {
               style={{...styles.modalToggle, ...styles.modalClose}} 
               onPress={() => setModalOpen(false)} 
             />
-            <PostForm setModalOpen={setModalOpen} logInToken={logInToken}/>
+            <PostForm setModalOpen={setModalOpen} logInToken={loggedInToken}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -71,7 +62,7 @@ export default function Home({ navigation }) {
       />
 
       <FlatList data={posts} renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { item: item, logInToken: logInToken })}>
+        <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { item: item, logInToken: loggedInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
           </Card>

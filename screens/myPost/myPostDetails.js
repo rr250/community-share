@@ -11,12 +11,6 @@ export default function MyPostDetails({ navigation }) {
   const [pageNo, setPageNo] = useState(0);
   const [helps, setHelps] = useState([]);
 
-  // useEffect(()=>{
-  //   AsyncStorage.getItem('LoggedInToken').then((token)=>{
-  //     setLogInToken(token.slice(1,logInToken.length-1));
-  //   })
-  // },[])
-
   const item = navigation.getParam('item');
 
   if(logInToken==='')

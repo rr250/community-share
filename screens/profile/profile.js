@@ -11,8 +11,6 @@ import FlatButton from '../../shared/button.js';
 
 export default function Profile() {
   const { loggedInToken, dispatch } = useContext(AuthContext);
-  const [logInToken, setLogInToken] = useState('');
-  console.log('use'+loggedInToken+'token');
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({
     detailsUpdated: true,
@@ -28,38 +26,26 @@ export default function Profile() {
     phoneNumber: "string",
     userId: "string"
   });
-  
-  useEffect(()=>{
-    AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token.slice(1,logInToken.length-1));
-    })
-  },[])
 
   useEffect(() => {
-    if(logInToken!==null && logInToken!==''){
-      console.log(logInToken)
-      API.get('users/me',{
-        headers:{
-          Authorization:logInToken
-        }
-      })
-      .then(res=>{
-        console.log(res)
-        setUser(res.data)
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-    }    
-  }, [logInToken])
+    API.get('users/me',{
+      headers:{
+        Authorization:loggedInToken
+      }
+    })
+    .then(res=>{
+      console.log(res)
+      setUser(res.data)
+    })
+    .catch((err)=>{
+      console.log(err);
+    })    
+  }, [modalOpen])
 
   const signout = () => {
     API.post('auth/logout',{
-      params:{
-        Authorization:logInToken
-      },
       headers:{
-        Authorization:logInToken
+        Authorization:loggedInToken
       }
     })
     .then(res=>{
@@ -81,7 +67,7 @@ export default function Profile() {
               style={{...styles.modalToggle, ...styles.modalClose}} 
               onPress={() => setModalOpen(false)} 
             />
-            <ProfileForm setModalOpen={setModalOpen}/>
+            <ProfileForm setModalOpen={setModalOpen} logInToken={loggedInToken}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>

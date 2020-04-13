@@ -10,7 +10,7 @@ const screens = {
     headerLeft: null,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Community Share' navigation={navigation} />
+        headerTitle: () => <Header title='COGIV' navigation={navigation} />
       }
     },
     PostDetails: {

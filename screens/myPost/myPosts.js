@@ -10,40 +10,29 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export default function MyPosts({ navigation }) {
 
-  const { loggedInToken, dispatch } = useContext(AuthContext);
-  const [logInToken, setLogInToken] = useState('');
-  console.log('use'+loggedInToken+'token');
+  const { loggedInToken, dispatch } = useContext(AuthContext);;
   const [modalOpen, setModalOpen] = useState(false);
   const [pageNo, setPageNo] = useState(0);
   const [posts, setPosts] = useState([]);
-  
-  useEffect(()=>{
-    AsyncStorage.getItem('LoggedInToken').then((token)=>{
-      setLogInToken(token.slice(1,logInToken.length-1));
-    })
-  },[])
 
   useEffect(() => {
-    if(logInToken!==null && logInToken!==''){
-      console.log(logInToken)
-      API.get('posts/me',{
-        params:{
-          pageNo:pageNo,
-          pageSize:10,
-        },
-        headers:{
-          Authorization:logInToken
-        }
-      })
-      .then(res=>{
-        console.log(res)
-        setPosts(res.data)
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-    }    
-  }, [logInToken])
+    API.get('posts/me',{
+      params:{
+        pageNo:pageNo,
+        pageSize:10,
+      },
+      headers:{
+        Authorization:loggedInToken
+      }
+    })
+    .then(res=>{
+      console.log(res)
+      setPosts(res.data)
+    })
+    .catch((err)=>{
+      console.log(err);
+    })  
+  }, [modalOpen])
 
   return (
     <View style={globalStyles.container}>
@@ -70,7 +59,7 @@ export default function MyPosts({ navigation }) {
       />
 
       <FlatList data={posts} keyExtractor={(item, index) => item.postId} renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', { item: item, logInToken: logInToken })}>
+        <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', { item: item, logInToken: loggedInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
           </Card>
