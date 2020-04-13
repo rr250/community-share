@@ -16,16 +16,15 @@ const API = axios.create({
 // API.interceptors.request.use( config => {
 //   console.log('intercepted');
 //   var loggedInToken='';
-//   getToken().then((token)=>{
+//   return getToken().then((token)=>{
 //     loggedInToken=token;  
 //     if(loggedInToken!==null||loggedInToken!==''){
 //       config.headers.common.Authorization= loggedInToken;
 //       console.log(config.headers)
 //       console.log(config)
+//       return config
 //     }
 //   });
-//   console.log(config)
-//   return config
 // })
 
 export default API

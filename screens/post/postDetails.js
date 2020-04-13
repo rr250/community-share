@@ -16,7 +16,8 @@ const requestSchema = yup.object({
 export default function PostDetails({ navigation }) {
 
   const item = navigation.getParam('item');
-  const logInToken = navigation.getParam('logInToken')
+  if(logInToken==='')
+    logInToken = navigation.getParam('logInToken')
  
   return (
     <View style={globalStyles.container}>

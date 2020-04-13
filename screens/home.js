@@ -30,7 +30,8 @@ export default function Home({ navigation }) {
         params:{
           pageNo:pageNo,
           pageSize:10,
-          radius:10
+          radius:10,
+          includeOwn:true
         },
         headers:{
           Authorization:loggedInToken

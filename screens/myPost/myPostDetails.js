@@ -19,7 +19,8 @@ export default function MyPostDetails({ navigation }) {
 
   const item = navigation.getParam('item');
 
-  setLogInToken(navigation.getParam('logInToken'))
+  if(logInToken==='')
+    setLogInToken(navigation.getParam('logInToken'));
 
   useEffect(() => {
     if(logInToken!==null && logInToken!==''){

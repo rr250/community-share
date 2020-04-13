@@ -54,6 +54,20 @@ export default function Profile() {
   }, [logInToken])
 
   const signout = () => {
+    API.post('auth/logout',{
+      params:{
+        Authorization:logInToken
+      },
+      headers:{
+        Authorization:logInToken
+      }
+    })
+    .then(res=>{
+      console.log(res)
+    })
+    .catch((error)=>{
+      console.log(error.response);
+    })
     dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
   }
   return (
