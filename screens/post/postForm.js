@@ -30,9 +30,9 @@ export default function PostForm({ setModalOpen, logInToken}) {
             description: values.description,
             fullAddress: "string",
             geoHash: "string",
-            latitude: 12,
+            latitude: 77.5946,
             locationDisplayName: values.locationDisplayName,
-            longitude: 77,
+            longitude: 12.9716,
             title: values.title,
             willingToPay: true
           },

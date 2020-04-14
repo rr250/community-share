@@ -7,8 +7,6 @@ import API from '../../utils/api';
 export default function MyPostDetails({ navigation }) {
 
   const [logInToken, setLogInToken] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [pageNo, setPageNo] = useState(0);
   const [helps, setHelps] = useState([]);
 
   const item = navigation.getParam('item');

@@ -8,7 +8,7 @@ const screens = {
     screen: Profile,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='Profile' navigation={navigation} />
+        headerTitle: () => <Header title='COGIV' navigation={navigation} />
       }
     },
   },

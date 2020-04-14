@@ -7,6 +7,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import API from '../utils/api';
 import PostForm from './post/postForm';
 import { MaterialIcons } from '@expo/vector-icons';
+import FlatButton from '../shared/button';
 
 export default function Home({ navigation }) {
 
@@ -22,7 +23,7 @@ export default function Home({ navigation }) {
       params:{
         pageNo:pageNo,
         pageSize:10,
-        radius:10,
+        radius:10000,
         includeOwn:true
       },
       headers:{
@@ -31,11 +32,38 @@ export default function Home({ navigation }) {
     })
     .then(res=>{
       console.log(res)
+      setPosts(res.data)
+      setPageNo(pageNo+1)
     })
     .catch((error)=>{
       console.log(error.response);
     })
   }, [modalOpen, navigation])
+
+  const loadMore = () => {
+    API.get('posts',{
+      params:{
+        pageNo:pageNo,
+        pageSize:10,
+        radius:10000,
+        includeOwn:true
+      },
+      headers:{
+        Authorization:loggedInToken
+      }
+    })
+    .then(res=>{
+      console.log(res)
+      setPosts((posts)=>{
+        return [...posts, ...res.data]
+      })
+      setPageNo(pageNo+1)
+    })
+    .catch((err)=>{
+      console.log(err);
+    })  
+  }
+  
 
   return (
     <View style={globalStyles.container}>
@@ -61,14 +89,14 @@ export default function Home({ navigation }) {
         onPress={() => setModalOpen(true)} 
       />
 
-      <FlatList data={posts} renderItem={({ item }) => (
+      <FlatList data={posts} keyExtractor={(item, index) => item.postId} renderItem={({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { item: item, logInToken: loggedInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
           </Card>
         </TouchableOpacity>
       )} />
-
+      { posts.length%10===0 && <FlatButton onPress={loadMore} text='Load More' /> }
     </View>
   );
 }

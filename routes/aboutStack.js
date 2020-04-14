@@ -8,7 +8,7 @@ const screens = {
     screen: About,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='GameZone' navigation={navigation} />
+        headerTitle: () => <Header title='COGIV' navigation={navigation} />
       }
     },
   },

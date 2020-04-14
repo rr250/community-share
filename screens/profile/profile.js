@@ -11,7 +11,7 @@ import FlatButton from '../../shared/button.js';
 
 export default function Profile() {
   const { loggedInToken, dispatch } = useContext(AuthContext);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [user, setUser] = useState({
     detailsUpdated: true,
     homeLocation: {
@@ -27,6 +27,27 @@ export default function Profile() {
     userId: "string"
   });
 
+  const [x, setX] = useState('12.9716');
+
+  const [y, setY] = useState('77.5946');
+
+  const findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = JSON.stringify(position);
+        console.log(position);
+        setX(position.coords.latitude);
+        setY(position.coords.longitude);
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
+
+  useEffect(() => {
+    findCoordinates();
+  }, [])
+
   useEffect(() => {
     API.get('users/me',{
       headers:{
@@ -40,7 +61,7 @@ export default function Profile() {
     .catch((err)=>{
       console.log(err);
     })    
-  }, [modalOpen])
+  }, [profileModalOpen])
 
   const signout = () => {
     API.post('auth/logout',{
@@ -58,16 +79,16 @@ export default function Profile() {
   }
   return (
     <View style={globalStyles.container}>
-      <Modal visible={modalOpen} animationType='slide'>
+      <Modal visible={profileModalOpen} animationType='slide'>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modalContent}>
+          <View style={styles.profileModalContent}>
             <MaterialIcons 
               name='close'
               size={24} 
-              style={{...styles.modalToggle, ...styles.modalClose}} 
-              onPress={() => setModalOpen(false)} 
+              style={{...styles.profileModalToggle, ...styles.profileModalClose}} 
+              onPress={() => setProfileModalOpen(false)} 
             />
-            <ProfileForm setModalOpen={setModalOpen} logInToken={loggedInToken}/>
+            <ProfileForm setProfileModalOpen={setProfileModalOpen} logInToken={loggedInToken} x={x} y={y}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -75,8 +96,8 @@ export default function Profile() {
       <MaterialIcons 
         name='add' 
         size={24} 
-        style={styles.modalToggle}
-        onPress={() => setModalOpen(true)} 
+        style={styles.profileModalToggle}
+        onPress={() => setProfileModalOpen(true)} 
       />
 
       <Card>
@@ -91,7 +112,7 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  modalToggle: {
+  profileModalToggle: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
@@ -101,11 +122,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'center',
   },
-  modalClose: {
+  profileModalClose: {
     marginTop: 20,
     marginBottom: 0,
   },
-  modalContent: {
+  profileModalContent: {
     flex: 1,
   }
 });

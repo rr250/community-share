@@ -9,7 +9,7 @@ const screens = {
     screen: MyPosts,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: () => <Header title='MyPosts' navigation={navigation} />
+        headerTitle: () => <Header title='COGIV' navigation={navigation} />
       }
     },
   },

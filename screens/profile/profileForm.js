@@ -12,24 +12,7 @@ const requestSchema = yup.object({
     .min(3),
 });
 
-export default function ProfileForm({ setModalOpen, logInToken}) {
-
-  const [x, setX] = useState('12.9716');
-
-  const [y, setY] = useState('77.5946');
-
-  const findCoordinates = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const location = JSON.stringify(position);
-        console.log(position);
-        setX(position.coords.latitude);
-        setY(position.coords.longitude);
-      },
-      error => Alert.alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
+export default function ProfileForm({ setProfileModalOpen, logInToken, x, y}) {
 
   return (
     
@@ -38,11 +21,11 @@ export default function ProfileForm({ setModalOpen, logInToken}) {
         initialValues={{ name: ''}}
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
-          findCoordinates();
+          console.log(x,y)
           API.put('users',{
             homeLocation:{
-              x:12,
-              y:77
+              x:77.5946,
+              y:12.9716
             },
             name:values.name
           },
@@ -53,7 +36,7 @@ export default function ProfileForm({ setModalOpen, logInToken}) {
           })
           .then(res=>{
             console.log(res);
-            setModalOpen(false)
+            setProfileModalOpen(false)
           })
           .catch((err)=>{
             console.log(err);
