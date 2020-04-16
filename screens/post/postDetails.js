@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { globalStyles, images } from '../../styles/global';
 import Card from '../../shared/card';
 import { Formik } from 'formik';
@@ -16,9 +16,7 @@ const requestSchema = yup.object({
 export default function PostDetails({ navigation }) {
 
   const item = navigation.getParam('item');
-  const logInToken='';
-  if(logInToken==='')
-    logInToken = navigation.getParam('logInToken')
+  const logInToken=navigation.getParam('logInToken');
  
   return (
     <View style={globalStyles.container}>
@@ -30,11 +28,11 @@ export default function PostDetails({ navigation }) {
         <Text>{ item.locationDisplayName }</Text>
       </Card>
       <Formik
-        initialValues={{ phoneNumber: '',}}
+        initialValues={{ message: '',}}
         validationSchema={requestSchema}
         onSubmit={(values, actions) => {
           API.post('help-offers',{
-            postId: navigation.getParam('postId'),
+            postId: item.postId,
             message:values.message
           },
           {
@@ -45,10 +43,9 @@ export default function PostDetails({ navigation }) {
           )
           .then(res=>{
             console.log(res)
-            navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
           })
-          .catch((err)=>{
-            console.log(err);
+          .catch((error)=>{
+            console.log(error.response);
           })
           actions.resetForm();           
         }}

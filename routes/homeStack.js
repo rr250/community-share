@@ -7,17 +7,16 @@ import PostDetails from '../screens/post/postDetails'
 const screens = {
   Home: {
     screen: Home,
-    headerLeft: null,
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: () => <Header title='COGIV' navigation={navigation} />
       }
     },
-    PostDetails: {
-      screen: PostDetails,
-      navigationOptions: {
-        title: 'MyPostDetails',
-      }
+  },
+  PostDetails: {
+    screen: PostDetails,
+    navigationOptions: {
+      title: 'PostDetails',
     }
   },
 };

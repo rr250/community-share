@@ -18,9 +18,9 @@ export default function MyPostDetails({ navigation }) {
     if(logInToken!==null && logInToken!==''){
       console.log(logInToken)
       const postId=navigation.getParam('postId');
-      API.get('posts/'+postId+'/help-offers',{
+      API.get('posts/'+item.postId+'/help-offers',{
         params:{
-          postId:postId
+          postId:item.postId
         },
         headers:{
           Authorization:logInToken
@@ -47,11 +47,9 @@ export default function MyPostDetails({ navigation }) {
       </Card>
 
       <FlatList data={helps} keyExtractor={(item, index) => item.helpId} renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', item)}>
-          <Card>
-            <Text style={globalStyles.titleText}>{ item.message }</Text>
-          </Card>
-        </TouchableOpacity>
+        <Card>
+          <Text style={globalStyles.titleText}>{ item.message }</Text>
+        </Card>
       )} />
     </View>
   );

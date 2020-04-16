@@ -67,7 +67,7 @@ export default function MyPosts({ navigation }) {
           </Card>
         </TouchableOpacity>
       )} />
-      { posts.length%10===0 && <FlatButton onPress={loadMore} text='Load More' /> }
+      { posts.length%10===0 && posts.length!==0 && <FlatButton onPress={loadMore} text='Load More' /> }
     </View>
   );
 }

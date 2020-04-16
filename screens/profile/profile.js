@@ -94,11 +94,11 @@ export default function Profile() {
       </Modal>
 
       <MaterialIcons 
-        name='add' 
+        name='edit' 
         size={24} 
         style={styles.profileModalToggle}
         onPress={() => setProfileModalOpen(true)} 
-      />
+      > EDIT PROFILE</MaterialIcons>
 
       <Card>
         <Text style={globalStyles.titleText}>
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     alignSelf: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#333',
   },
   profileModalClose: {
     marginTop: 20,

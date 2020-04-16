@@ -24,7 +24,7 @@ export default function Login({ navigation }) {
         onSubmit={(values, actions) => {
           API.post('auth/login',{
             otpLength:6,
-            phoneNumber:values.phoneNumber
+            phoneNumber:'+91'+values.phoneNumber
           })
           .then(res=>{
             console.log(res)
@@ -38,18 +38,24 @@ export default function Login({ navigation }) {
       >
         {props => (
           <View>
-            <TextInput
-              style={globalStyles.input}
-              placeholder='Enter your Phone Number'
-              onChangeText={props.handleChange('phoneNumber')}
-              onBlur={props.handleBlur('phoneNumber')} 
-              value={props.values.phoneNumber}
-              keyboardType='numeric'
-            />
-            {/* only if the left value is a valid string, will the right value be displayed */}
-            <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
-
+            <View style={styles.login}>
+              <TextInput
+                style={globalStyles.input}
+                value={'+91'}
+              />
+              <TextInput
+                style={globalStyles.input}
+                placeholder='Enter your Indian Phone Number'
+                onChangeText={props.handleChange('phoneNumber')}
+                onBlur={props.handleBlur('phoneNumber')} 
+                value={props.values.phoneNumber}
+                keyboardType='numeric'
+              />
+              {/* only if the left value is a valid string, will the right value be displayed */}
+              <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
+              </View>
             <FlatButton onPress={props.handleSubmit} text='submit' />
+          
           </View>
         )}
       </Formik>
@@ -57,3 +63,11 @@ export default function Login({ navigation }) {
     
   );
 }
+
+const styles = StyleSheet.create({
+  login: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom:35
+  }
+})
