@@ -28,15 +28,18 @@ export default function SignUp({ navigation }) {
       position => {
         const location = JSON.stringify(position);
         console.log(position);
-        setX(position.coords.latitude);
-        setY(position.coords.longitude);
+        setX(position.coords.longitude);
+        setY(position.coords.latitude);
       },
       error => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
 
-  findCoordinates();
+
+  useEffect(() => {
+    findCoordinates();
+  }, [])
 
   return (
     
@@ -50,8 +53,8 @@ export default function SignUp({ navigation }) {
           console.log('Bearer ${authToken}');
           Axios.put(baseURL+'users',{
             homeLocation:{
-              x:12.9716,
-              y:77.5946
+              x:x,
+              y:y
             },
             name:values.name
           },

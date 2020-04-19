@@ -27,17 +27,16 @@ export default function Profile() {
     userId: "string"
   });
 
-  const [x, setX] = useState('12.9716');
-
-  const [y, setY] = useState('77.5946');
+  const [x, setX] = useState('77.5946');
+  const [y, setY] = useState('12.9716');
 
   const findCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
         const location = JSON.stringify(position);
         console.log(position);
-        setX(position.coords.latitude);
-        setY(position.coords.longitude);
+        setX(position.coords.longitude);
+        setY(position.coords.latitude);
       },
       error => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }

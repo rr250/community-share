@@ -17,7 +17,7 @@ const requestSchema = yup.object({
     .required()
 });
 
-export default function PostForm({ setModalOpen, logInToken}) {
+export default function PostForm({ setModalOpen, logInToken, x, y }) {
 
   return (
     
@@ -30,9 +30,9 @@ export default function PostForm({ setModalOpen, logInToken}) {
             description: values.description,
             fullAddress: "string",
             geoHash: "string",
-            latitude: 77.5946,
+            latitude: y,
             locationDisplayName: values.locationDisplayName,
-            longitude: 12.9716,
+            longitude: x,
             title: values.title,
             willingToPay: true
           },

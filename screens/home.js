@@ -17,11 +17,21 @@ export default function Home({ navigation }) {
   const [pageNo, setPageNo] = useState(0);
   const [radius, setRadius] = useState('10');
   const [posts, setPosts] = useState([]);
+  const [x, setX] = useState('77.5946');
+  const [y, setY] = useState('12.9716');
 
-  useEffect(() => {
-    console.log(navigation)
-    loadFirst();
-  }, [modalOpen])
+  const findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = JSON.stringify(position);
+        console.log(position);
+        setX(position.coords.longitude);
+        setY(position.coords.latitude);
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   const loadFirst = () => {
     API.get('posts',{
@@ -75,11 +85,26 @@ export default function Home({ navigation }) {
     })
     .catch((error)=>{
       console.log(error.response)
-      const message = error.response.data.message?error.response.data.message:null;
-      const statusText = error.response.statusText;
-      Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
-    })  
+      if(error.response.status===401){
+        Alert.alert('Session Expired', 'Login Again');
+        dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+      }
+      else{
+        const message = error.response.data.message?error.response.data.message:null;
+        const statusText = error.response.statusText;
+        Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+      }
+    }) 
   }
+
+  useEffect(() => {
+    findCoordinates();
+  }, [])
+
+  useEffect(() => {
+    console.log(navigation)
+    loadFirst();
+  }, [modalOpen])
   
   const handleRadiusChange=(text)=>{
     setRadius(text.substring(9));
@@ -102,7 +127,7 @@ export default function Home({ navigation }) {
               style={{...styles.modalToggleClose, ...styles.modalClose}} 
               onPress={() => setModalOpen(false)} 
             />
-            <PostForm setModalOpen={setModalOpen} logInToken={loggedInToken}/>
+            <PostForm setModalOpen={setModalOpen} logInToken={loggedInToken} x={x} y={y}/>
           </View>
         </TouchableWithoutFeedback>
       </Modal>

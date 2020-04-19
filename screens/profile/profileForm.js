@@ -24,8 +24,8 @@ export default function ProfileForm({ setProfileModalOpen, logInToken, x, y}) {
           console.log(x,y)
           API.put('users',{
             homeLocation:{
-              x:77.5946,
-              y:12.9716
+              x:x,
+              y:y
             },
             name:values.name
           },
