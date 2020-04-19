@@ -64,18 +64,27 @@ export default function Profile() {
   }, [profileModalOpen])
 
   const signout = () => {
-    API.post('auth/logout',{
+    API.post('auth/logout',{},{
       headers:{
         Authorization:loggedInToken
       }
     })
     .then(res=>{
       console.log(res)
+      dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
     })
     .catch((error)=>{
-      console.log(error.response);
-    })
-    dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+      console.log(error.response)
+      if(error.response.status===401){
+        Alert.alert('Session Expired', 'Login Again');
+        dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+      }
+      else{
+        const message = error.response.data.message?error.response.data.message:null;
+        const statusText = error.response.statusText;
+        Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+      }
+    }) 
   }
   return (
     <View style={globalStyles.container}>

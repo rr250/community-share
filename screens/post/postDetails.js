@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Alert } from 'react-native';
 import { globalStyles, images } from '../../styles/global';
 import Card from '../../shared/card';
 import { Formik } from 'formik';
@@ -45,8 +45,17 @@ export default function PostDetails({ navigation }) {
             console.log(res)
           })
           .catch((error)=>{
-            console.log(error.response);
-          })
+            console.log(error.response)
+            if(error.response.status===401){
+              Alert.alert('Session Expired', 'Login Again');
+              dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+            }
+            else{
+              const message = error.response.data.message?error.response.data.message:null;
+              const statusText = error.response.statusText;
+              Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+            }
+          }) 
           actions.resetForm();           
         }}
       >

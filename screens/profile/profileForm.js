@@ -38,9 +38,18 @@ export default function ProfileForm({ setProfileModalOpen, logInToken, x, y}) {
             console.log(res);
             setProfileModalOpen(false)
           })
-          .catch((err)=>{
-            console.log(err);
-          })
+          .catch((error)=>{
+            console.log(error.response)
+            if(error.response.status===401){
+              Alert.alert('Session Expired', 'Login Again');
+              dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+            }
+            else{
+              const message = error.response.data.message?error.response.data.message:null;
+              const statusText = error.response.statusText;
+              Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+            }
+          }) 
           actions.resetForm(); 
         }}
       >

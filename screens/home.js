@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal,
-  TouchableWithoutFeedback, Keyboard, AsyncStorage, TextInput, Button } from 'react-native';
+  TouchableWithoutFeedback, Keyboard, AsyncStorage, TextInput, Button, Alert } from 'react-native';
 import { globalStyles } from '../styles/global';
 import Card from '../shared/card';
 import { AuthContext } from '../contexts/AuthContext';
@@ -40,9 +40,18 @@ export default function Home({ navigation }) {
       setPosts(res.data)
       setPageNo(1);
     })
-    .catch((err)=>{
-      console.log(err);
-    })  
+    .catch((error)=>{
+      console.log(error.response)
+      if(error.response.status===401){
+        Alert.alert('Session Expired', 'Login Again');
+        dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+      }
+      else{
+        const message = error.response.data.message?error.response.data.message:null;
+        const statusText = error.response.statusText;
+        Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+      }
+    }) 
   }
 
   const loadMore = () => {
@@ -64,8 +73,11 @@ export default function Home({ navigation }) {
       })
       setPageNo(pageNo+1)
     })
-    .catch((err)=>{
-      console.log(err);
+    .catch((error)=>{
+      console.log(error.response)
+      const message = error.response.data.message?error.response.data.message:null;
+      const statusText = error.response.statusText;
+      Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
     })  
   }
   
@@ -140,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: '#333',
-    marginRight: 45
+    marginRight: 25
   },
   modalToggleClose: {
     justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, TouchableOpacity, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Alert, TouchableOpacity, AsyncStorage } from 'react-native';
 import { globalStyles, images } from '../../styles/global';
 import Card from '../../shared/card';
 import API from '../../utils/api';
@@ -30,9 +30,18 @@ export default function MyPostDetails({ navigation }) {
         console.log(res)
         setHelps(res.data)
       })
-      .catch((err)=>{
-        console.log(err);
-      })
+      .catch((error)=>{
+        console.log(error.response)
+        if(error.response.status===401){
+          Alert.alert('Session Expired', 'Login Again');
+          dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+        }
+        else{
+          const message = error.response.data.message?error.response.data.message:null;
+          const statusText = error.response.statusText;
+          Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+        }
+      }) 
     }    
   }, [logInToken])
 

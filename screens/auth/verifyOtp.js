@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Button, TextInput, View, Text } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, Alert } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -39,6 +39,11 @@ export default function VerifyOtp({ navigation }) {
               const authToken = "Bearer "+res.data.token;
               dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
             }
+          })
+          .catch((error)=>{
+            const message = error.response.data.message?error.response.data.message:null;
+            const statusText = error.response.statusText;
+            Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
           })
           actions.resetForm();    
         }}

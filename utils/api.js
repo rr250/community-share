@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AsyncStorage } from 'react-native';
 
-export const baseURL="http://192.168.43.76:8085/";
+export const baseURL="https://cogiv.social/";
 
 const API = axios.create({
   baseURL: baseURL,

@@ -62,8 +62,11 @@ export default function SignUp({ navigation }) {
             console.log(res);
             dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
           })
-          .catch((err)=>{
-            console.log(err);
+          .catch((error)=>{
+            console.log(error.response)
+            const message = error.response.data.message?error.response.data.message:null;
+            const statusText = error.response.statusText;
+            Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
           })
           actions.resetForm(); 
         }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, TextInput, View, Text } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, Alert } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -7,10 +7,10 @@ import FlatButton from '../../shared/button.js';
 import API from '../../utils/api.js';
 
 const requestSchema = yup.object({
-  phoneNumber: yup.string()
+  phoneNumber: yup.number()
     .required()
-    .min(10)
-    .max(10),
+    .min(1000000000)
+    .max(9999999999),
 });
 
 export default function Login({ navigation }) {
@@ -31,7 +31,10 @@ export default function Login({ navigation }) {
             navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
           })
           .catch((error)=>{
-            console.log(error.request);
+            console.log(error.response)
+            const message = error.response.data.message?error.response.data.message:null;
+            const statusText = error.response.statusText;
+            Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
           })
           actions.resetForm();           
         }}
@@ -40,20 +43,20 @@ export default function Login({ navigation }) {
           <View>
             <View style={styles.login}>
               <TextInput
-                style={globalStyles.input}
+                style={{...globalStyles.input,width:'15%'}}
                 value={'+91'}
               />
               <TextInput
-                style={globalStyles.input}
-                placeholder='Enter your Indian Phone Number'
+                style={{...globalStyles.input,width:'80%'}}
+                placeholder='Enter your Phone Number'
                 onChangeText={props.handleChange('phoneNumber')}
                 onBlur={props.handleBlur('phoneNumber')} 
                 value={props.values.phoneNumber}
                 keyboardType='numeric'
               />
               {/* only if the left value is a valid string, will the right value be displayed */}
-              <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
-              </View>
+            </View>
+            <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
             <FlatButton onPress={props.handleSubmit} text='submit' />
           
           </View>
