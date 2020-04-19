@@ -18,13 +18,13 @@ export default function Profile() {
       coordinates: [
         0
       ],
-      type: "string",
+      type: "",
       x: 0,
       y: 0
     },
-    name: "string",
-    phoneNumber: "string",
-    userId: "string"
+    name: "",
+    phoneNumber: "",
+    userId: ""
   });
 
   const [x, setX] = useState('77.5946');

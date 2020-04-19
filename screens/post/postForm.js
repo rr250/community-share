@@ -28,8 +28,8 @@ export default function PostForm({ setModalOpen, logInToken, x, y }) {
         onSubmit={(values, actions) => {
           API.post('posts',{
             description: values.description,
-            fullAddress: "string",
-            geoHash: "string",
+            fullAddress: "",
+            geoHash: "",
             latitude: y,
             locationDisplayName: values.locationDisplayName,
             longitude: x,
