@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, TextInput, View, Text, Alert } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, Alert, Image } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -40,7 +40,7 @@ export default function Login({ navigation }) {
         }}
       >
         {props => (
-          <View>
+          <View style={{flex:1}}>
             <View style={styles.login}>
               <TextInput
                 style={{...globalStyles.input,width:'15%'}}
@@ -58,7 +58,14 @@ export default function Login({ navigation }) {
             </View>
             <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
             <FlatButton onPress={props.handleSubmit} text='submit' />
-          
+            <View style={styles.cogiv}>
+              <Image source={require('../../assets/cogiv_logo_nowhite.png')} style={styles.cogivImage} />
+              <Text style={styles.cogivText}>COGIV</Text>
+            </View>
+            <View style={styles.scaler}>
+              <Image source={require('../../assets/scaler_logo.png')} style={styles.scalerImage} />
+              <Text style={styles.scalerText}>Made By Scaler Academy</Text>
+            </View>
           </View>
         )}
       </Formik>
@@ -71,6 +78,54 @@ const styles = StyleSheet.create({
   login: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom:35
+    marginBottom:10
+  },
+  cogiv:{
+    position: "relative",
+    top: 40,
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: '#c6f5ff',
+    marginHorizontal:30
+  },
+  cogivImage: {
+    width:'100%',
+    width:200,
+    height:200,
+    alignSelf:"center",
+
+  },
+  cogivText:{
+    textAlign: "center", 
+    position: "relative",
+    color: '#75b038',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 10,
+    textAlign: 'center',
+    fontSize: 40,
+  },
+  scaler: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    marginVertical: 10,
+    marginHorizontal: 10,
+    position: 'absolute',
+    bottom:0
+  },
+  scalerImage: {
+    width:'100%',
+    bottom:0,
+    width:25,
+    height:25,
+    marginHorizontal: 10
+  },
+  scalerText:{
+    textAlign: "center", 
+    color: '#808080',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 20,
   }
 })
