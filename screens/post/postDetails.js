@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { globalStyles, images } from '../../styles/global';
 import Card from '../../shared/card';
 import { Formik } from 'formik';
@@ -19,63 +19,66 @@ export default function PostDetails({ navigation }) {
   const logInToken=navigation.getParam('logInToken');
  
   return (
-    <View style={globalStyles.container}>
-      <Card>
-        <Text style={globalStyles.titleText}>
-          { item.title }
-        </Text>
-        <Text>{ item.description }</Text>
-        <Text>{ item.locationDisplayName }</Text>
-      </Card>
-      <Formik
-        initialValues={{ message: '',}}
-        validationSchema={requestSchema}
-        onSubmit={(values, actions) => {
-          API.post('help-offers',{
-            postId: item.postId,
-            message:values.message
-          },
-          {
-            headers: { 
-              Authorization: logInToken
-            }
-          }
-          )
-          .then(res=>{
-            console.log(res)
-          })
-          .catch((error)=>{
-            console.log(error.response)
-            if(error.response.status===401){
-              Alert.alert('Session Expired', 'Login Again');
-              dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
-            }
-            else{
-              const message = error.response.data.message?error.response.data.message:null;
-              const statusText = error.response.statusText;
-              Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
-            }
-          }) 
-          actions.resetForm();           
-        }}
-      >
-        {props => (
-          <View>
-            <TextInput
-              style={globalStyles.input}
-              placeholder='To help send a message'
-              onChangeText={props.handleChange('message')}
-              onBlur={props.handleBlur('message')} 
-              value={props.values.message}
-            />
-            {/* only if the left value is a valid string, will the right value be displayed */}
-            <Text style={globalStyles.errorText}>{props.touched.message && props.errors.message}</Text>
 
-            <FlatButton onPress={props.handleSubmit} text='submit' />
-          </View>
-        )}
-      </Formik>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={globalStyles.container}>
+        <Card>
+          <Text style={globalStyles.titleText}>
+            Item : { item.title }
+          </Text>
+          <Text>Description : { item.description }</Text>
+          <Text style={{alignSelf:"flex-end"}}>Location : { item.locationDisplayName }</Text>
+        </Card>
+        <Formik
+          initialValues={{ message: '',}}
+          validationSchema={requestSchema}
+          onSubmit={(values, actions) => {
+            API.post('help-offers',{
+              postId: item.postId,
+              message:values.message
+            },
+            {
+              headers: { 
+                Authorization: logInToken
+              }
+            }
+            )
+            .then(res=>{
+              console.log(res)
+            })
+            .catch((error)=>{
+              console.log(error.response)
+              if(error.response.status===401){
+                Alert.alert('Session Expired', 'Login Again');
+                dispatch({ type: 'REMOVE_LOGIN_TOKEN', loggedInToken:''});
+              }
+              else{
+                const message = error.response.data.message?error.response.data.message:null;
+                const statusText = error.response.statusText;
+                Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+              }
+            }) 
+            actions.resetForm();           
+          }}
+        >
+          {props => (
+            <View>
+              <TextInput
+                style={globalStyles.input}
+                placeholder='To help send a message'
+                onChangeText={props.handleChange('message')}
+                onBlur={props.handleBlur('message')} 
+                value={props.values.message}
+              />
+              {/* only if the left value is a valid string, will the right value be displayed */}
+              <Text style={globalStyles.errorText}>{props.touched.message && props.errors.message}</Text>
+
+              <FlatButton onPress={props.handleSubmit} text='help' />
+            </View>
+          )}
+        </Formik>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

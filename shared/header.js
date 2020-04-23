@@ -9,13 +9,15 @@ export default function Header({ title, navigation }) {
   }
 
   return (
-    <ImageBackground source={require('../assets/white_bg.png')} style={styles.header}>
+    //<ImageBackground source={require('../assets/white_bg.png')} style={styles.header}>
+    <View style={styles.header}>
       <MaterialIcons name='menu' size={28} onPress={openMenu} style={styles.icon} />
       <View style={styles.headerTitle}>
         <Image source={require('../assets/cogiv_logo_nowhite.png')} style={styles.headerImage} />
         <Text style={styles.headerText}>{title}</Text>
       </View>
-    </ImageBackground>
+      </View>
+    //</ImageBackground>
   );
 }
 
@@ -26,16 +28,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#50B9D8'
   },
   headerText: {
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#75b038',
-    letterSpacing: 1,
+    color: '#ffffff',
+    letterSpacing: 2,
+    marginVertical: 10
   },
   icon: {
     position: 'absolute',
     left: 15,
+    color:'#ffffff'
   },
   headerTitle: {
     flexDirection: 'row'
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 40,
     height: 40,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    marginVertical: 7
   },
 });

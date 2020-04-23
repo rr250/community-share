@@ -14,7 +14,7 @@ const screens = {
   VerifyOtp: {
     screen: VerifyOtp,
     navigationOptions: {
-      title: 'VerifyOtp',
+      title: 'Verify Otp',
     }
   },
   SignUp: {
@@ -28,8 +28,9 @@ const screens = {
 // home stack navigator screens
 const AuthStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerTintColor: '#444',
-    headerStyle: { backgroundColor: '#eee', height: 60 }
+    headerTintColor: '#ffffff',
+    headerStyle: { backgroundColor: '#50B9D8', height: 60 },
+    headerTitleStyle: { color: '#ffffff'}
   }
 });
 

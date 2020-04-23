@@ -96,6 +96,8 @@ export default function MyPosts({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('MyPostDetails', { item: item, logInToken: loggedInToken })}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
+            <Text>{ item.description }</Text>
+            <Text style={{alignSelf:"flex-end"}}>{ item.locationDisplayName }</Text>
           </Card>
         </TouchableOpacity>
       )} />

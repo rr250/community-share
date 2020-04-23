@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal,
-  TouchableWithoutFeedback, Keyboard, AsyncStorage, TextInput, Button, Alert } from 'react-native';
+  TouchableWithoutFeedback, Keyboard, TextInput, Alert } from 'react-native';
 import { globalStyles } from '../styles/global';
 import Card from '../shared/card';
 import { AuthContext } from '../contexts/AuthContext';
 import API from '../utils/api';
 import PostForm from './post/postForm';
 import { MaterialIcons } from '@expo/vector-icons';
-import FlatButton from '../shared/button';
 
 export default function Home({ navigation }) {
 
@@ -116,6 +115,7 @@ export default function Home({ navigation }) {
   }
 
   const handleRadiusSubmit=()=>{
+    Keyboard.dismiss();
     console.log(pageNo,radius);
     loadFirst();
   }
@@ -143,7 +143,7 @@ export default function Home({ navigation }) {
           size={24} 
           style={styles.modalToggle}
           onPress={() => setModalOpen(true)} 
-        > ADD NEW POST</MaterialIcons>
+        > REQUEST ITEM</MaterialIcons>
 
         <TextInput
           style={styles.input}
@@ -169,6 +169,7 @@ export default function Home({ navigation }) {
         <TouchableOpacity onPress={() => {navigation.navigate('PostDetails', { item: item, logInToken: loggedInToken })}}>
           <Card>
             <Text style={globalStyles.titleText}>{ item.title }</Text>
+            <Text style={{alignSelf:"flex-end"}}>{ item.locationDisplayName }</Text>
           </Card>
         </TouchableOpacity>
       )} />

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Button, TextInput, View, Text, Alert, Image } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, 
+  Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -16,60 +17,61 @@ const requestSchema = yup.object({
 export default function Login({ navigation }) {
 
   return (
-    
-    <View style={globalStyles.container}>
-      <Formik
-        initialValues={{ phoneNumber: '',}}
-        validationSchema={requestSchema}
-        onSubmit={(values, actions) => {
-          API.post('auth/login',{
-            otpLength:6,
-            phoneNumber:'+91'+values.phoneNumber
-          })
-          .then(res=>{
-            console.log(res)
-            navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
-          })
-          .catch((error)=>{
-            console.log(error.response)
-            const message = error.response.data.message?error.response.data.message:null;
-            const statusText = error.response.statusText;
-            Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
-          })
-          actions.resetForm();           
-        }}
-      >
-        {props => (
-          <View style={{flex:1}}>
-            <View style={styles.login}>
-              <TextInput
-                style={{...globalStyles.input,width:'15%'}}
-                value={'+91'}
-              />
-              <TextInput
-                style={{...globalStyles.input,width:'80%'}}
-                placeholder='Enter your Phone Number'
-                onChangeText={props.handleChange('phoneNumber')}
-                onBlur={props.handleBlur('phoneNumber')} 
-                value={props.values.phoneNumber}
-                keyboardType='numeric'
-              />
-              {/* only if the left value is a valid string, will the right value be displayed */}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={globalStyles.container}>
+        <Formik
+          initialValues={{ phoneNumber: '',}}
+          validationSchema={requestSchema}
+          onSubmit={(values, actions) => {
+            API.post('auth/login',{
+              otpLength:6,
+              phoneNumber:'+91'+values.phoneNumber
+            })
+            .then(res=>{
+              console.log(res)
+              navigation.navigate('VerifyOtp', {requestId:res.data.requestId})
+            })
+            .catch((error)=>{
+              console.log(error.response)
+              const message = error.response.data.message?error.response.data.message:null;
+              const statusText = error.response.statusText;
+              Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+            })
+            actions.resetForm();           
+          }}
+        >
+          {props => (
+            <View style={{flex:1}}>
+              <View style={styles.login}>
+                <TextInput
+                  style={{...globalStyles.input,width:'15%'}}
+                  value={'+91'}
+                />
+                <TextInput
+                  style={{...globalStyles.input,width:'80%'}}
+                  placeholder='Enter your Phone Number'
+                  onChangeText={props.handleChange('phoneNumber')}
+                  onBlur={props.handleBlur('phoneNumber')} 
+                  value={props.values.phoneNumber}
+                  keyboardType='numeric'
+                />
+                {/* only if the left value is a valid string, will the right value be displayed */}
+              </View>
+              <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
+              <FlatButton onPress={props.handleSubmit} text='submit' />
+              <View style={styles.cogiv}>
+                <Image source={require('../../assets/cogiv_logo_nowhite.png')} style={styles.cogivImage} />
+                <Text style={styles.cogivText}>COGIV</Text>
+              </View>
+              <View style={styles.scaler}>
+                <Image source={require('../../assets/scaler_logo.png')} style={styles.scalerImage} />
+                <Text style={styles.scalerText}>Made By Scaler Academy</Text>
+              </View>
             </View>
-            <Text style={globalStyles.errorText}>{props.touched.phoneNumber && props.errors.phoneNumber}</Text>
-            <FlatButton onPress={props.handleSubmit} text='submit' />
-            <View style={styles.cogiv}>
-              <Image source={require('../../assets/cogiv_logo_nowhite.png')} style={styles.cogivImage} />
-              <Text style={styles.cogivText}>COGIV</Text>
-            </View>
-            <View style={styles.scaler}>
-              <Image source={require('../../assets/scaler_logo.png')} style={styles.scalerImage} />
-              <Text style={styles.scalerText}>Made By Scaler Academy</Text>
-            </View>
-          </View>
-        )}
-      </Formik>
-    </View>
+          )}
+        </Formik>
+      </View>
+    </TouchableWithoutFeedback>
     
   );
 }
@@ -83,10 +85,10 @@ const styles = StyleSheet.create({
   cogiv:{
     position: "relative",
     top: 40,
-    borderRadius: 8,
+    borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 10,
-    backgroundColor: '#c6f5ff',
+    backgroundColor: '#50B9D8',
     marginHorizontal:30
   },
   cogivImage: {
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   cogivText:{
     textAlign: "center", 
     position: "relative",
-    color: '#75b038',
+    color: '#ffffff',
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 10,
@@ -112,7 +114,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 10,
     position: 'absolute',
-    bottom:0
+    bottom:0,
+    zIndex:-1
   },
   scalerImage: {
     width:'100%',

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Alert, TouchableOpacity, AsyncStorage } from 'react-native';
-import { globalStyles, images } from '../../styles/global';
+import { StyleSheet, View, Text, FlatList, Alert } from 'react-native';
+import { globalStyles } from '../../styles/global';
 import Card from '../../shared/card';
 import API from '../../utils/api';
 

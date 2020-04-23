@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Button, TextInput, View, Text, AsyncStorage } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text,
+   TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import { globalStyles } from '../../styles/global.js';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -43,54 +44,56 @@ export default function SignUp({ navigation }) {
 
   return (
     
-    <View style={globalStyles.container}>
-      <Formik
-        initialValues={{ name: ''}}
-        validationSchema={requestSchema}
-        onSubmit={(values, actions) => {
-          console.log("Bearer "+navigation.getParam('token'));
-          const authToken = "Bearer "+navigation.getParam('token');
-          console.log('Bearer ${authToken}');
-          Axios.put(baseURL+'users',{
-            homeLocation:{
-              x:x,
-              y:y
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={globalStyles.container}>
+        <Formik
+          initialValues={{ name: ''}}
+          validationSchema={requestSchema}
+          onSubmit={(values, actions) => {
+            console.log("Bearer "+navigation.getParam('token'));
+            const authToken = "Bearer "+navigation.getParam('token');
+            console.log('Bearer ${authToken}');
+            Axios.put(baseURL+'users',{
+              homeLocation:{
+                x:x,
+                y:y
+              },
+              name:values.name
             },
-            name:values.name
-          },
-          {
-            headers: { Authorization: authToken }
-          })
-          .then(res=>{
-            console.log(res);
-            dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
-          })
-          .catch((error)=>{
-            console.log(error.response)
-            const message = error.response.data.message?error.response.data.message:null;
-            const statusText = error.response.statusText;
-            Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
-          })
-          actions.resetForm(); 
-        }}
-      >
-        {props => (
-          <View>
-            <TextInput
-              style={globalStyles.input}
-              placeholder='Enter your Name'
-              onChangeText={props.handleChange('name')}
-              onBlur={props.handleBlur('name')} 
-              value={props.values.name}
-            />
-            {/* only if the left value is a valid string, will the right value be displayed */}
-            <Text style={globalStyles.errorText}>{props.touched.name && props.errors.name}</Text>
+            {
+              headers: { Authorization: authToken }
+            })
+            .then(res=>{
+              console.log(res);
+              dispatch({ type: 'ADD_LOGIN_TOKEN', loggedInToken:authToken});
+            })
+            .catch((error)=>{
+              console.log(error.response)
+              const message = error.response.data.message?error.response.data.message:null;
+              const statusText = error.response.statusText;
+              Alert.alert('Error occurred', message && message!==undefined ? message : statusText!==undefined ? statusText : 'Wrong Input or Server is Down')
+            })
+            actions.resetForm(); 
+          }}
+        >
+          {props => (
+            <View>
+              <TextInput
+                style={globalStyles.input}
+                placeholder='Enter your Name'
+                onChangeText={props.handleChange('name')}
+                onBlur={props.handleBlur('name')} 
+                value={props.values.name}
+              />
+              {/* only if the left value is a valid string, will the right value be displayed */}
+              <Text style={globalStyles.errorText}>{props.touched.name && props.errors.name}</Text>
 
-            <FlatButton onPress={props.handleSubmit} text='submit' />
-          </View>
-        )}
-      </Formik>
-    </View>
+              <FlatButton onPress={props.handleSubmit} text='submit' />
+            </View>
+          )}
+        </Formik>
+      </View>
+    </TouchableWithoutFeedback>
     
   );
 }

@@ -12,7 +12,7 @@ const RootDrawerNavigator = createDrawerNavigator({
   Home: {
     screen: HomeStack,
   },
-  MyPost: {
+  'My Requests': {
     screen: MyPostStack,
   },
   Profile: {

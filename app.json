@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "community_share",
-    "slug": "community_share",
+    "name": "Cogiv",
+    "slug": "cogiv",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -27,7 +27,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.scaler.community_share"
+      "package": "com.scaler.cogiv"
     }
   }
 }
